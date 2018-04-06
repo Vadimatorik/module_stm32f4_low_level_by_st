@@ -1,8 +1,8 @@
 #pragma once
 
 #include "mc_hardware_interfaces_timer.h"
-#include "stm32f2xx_hal_tim.h"
-#include "stm32f2xx_hal_rcc.h"
+#include "stm32f4xx_hal_tim.h"
+#include "stm32f4xx_hal_rcc.h"
 
 /*!
  * Параметры делителя и вершины.

@@ -4,8 +4,8 @@
 #include "user_os.h"
 #include "mc_hardware_interfaces_spi.h"
 #include "pin.h"
-#include "stm32f2xx_hal_spi.h"
-#include "stm32f2xx_hal_dma.h"
+#include "stm32f4xx_hal_spi.h"
+#include "stm32f4xx_hal_dma.h"
 
 struct spi_master_8bit_cfg {
     SPI_TypeDef*                SPIx;

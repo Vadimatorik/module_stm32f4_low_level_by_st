@@ -188,6 +188,7 @@ typedef struct
   
   __IO uint32_t                 ErrorCode;        /*!< UART Error code                    */
 
+  void*							obj;				/// Для связи с CPP интерфейсами.
 }UART_HandleTypeDef;
 /**
   * @}

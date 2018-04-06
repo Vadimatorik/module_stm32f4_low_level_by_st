@@ -1,6 +1,6 @@
 #include "mc_hardware_interfaces_adc.h"
-#include "stm32f2xx_hal_adc.h"
-#include "stm32f2xx_hal_rcc.h"
+#include "stm32f4xx_hal_adc.h"
+#include "stm32f4xx_hal_rcc.h"
 
 struct adc_one_channel_cfg {
 	ADC_TypeDef*		ADCx;

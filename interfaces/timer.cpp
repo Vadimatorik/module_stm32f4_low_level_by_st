@@ -64,7 +64,6 @@ tim_comp_one_channel::tim_comp_one_channel ( const tim_comp_one_channel_cfg* con
 	this->hal_tim_cfg.Instance						= this->cfg->tim;
 
 	this->hal_tim_cfg.Channel						= this->cfg->tim_channel;
-	this->hal_tim_cfg.Init.AutoReloadPreload		= TIM_AUTORELOAD_PRELOAD_ENABLE;
 	this->hal_tim_cfg.Init.ClockDivision			= TIM_CLOCKDIVISION_DIV1;
 	this->hal_tim_cfg.Init.CounterMode				= TIM_COUNTERMODE_UP;
 
@@ -109,7 +108,6 @@ tim_pwm_one_channel::tim_pwm_one_channel ( const tim_pwm_one_channel_cfg* const 
 	this->hal_tim_cfg.Instance						= this->cfg->tim;
 
 	this->hal_tim_cfg.Channel						= this->cfg->tim_channel;
-	this->hal_tim_cfg.Init.AutoReloadPreload		= TIM_AUTORELOAD_PRELOAD_ENABLE;
 	this->hal_tim_cfg.Init.ClockDivision			= TIM_CLOCKDIVISION_DIV1;
 	this->hal_tim_cfg.Init.CounterMode				= TIM_COUNTERMODE_UP;
 
@@ -156,7 +154,6 @@ tim_interrupt::tim_interrupt( const tim_interrupt_cfg* const cfg ) : cfg( cfg ) 
 	this->hal_tim_cfg.Instance						= this->cfg->tim;
 
 	this->hal_tim_cfg.Channel						= this->cfg->tim_channel;
-	this->hal_tim_cfg.Init.AutoReloadPreload		= TIM_AUTORELOAD_PRELOAD_ENABLE;
 	this->hal_tim_cfg.Init.ClockDivision			= TIM_CLOCKDIVISION_DIV1;
 	this->hal_tim_cfg.Init.CounterMode				= TIM_COUNTERMODE_UP;
 
