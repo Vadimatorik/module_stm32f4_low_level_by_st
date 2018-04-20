@@ -60,7 +60,7 @@ static void init_clk_tim ( TIM_TypeDef* tim ) {
 //**********************************************************************
 // tim_comp_one_channel
 //**********************************************************************
-tim_comp_one_channel::tim_comp_one_channel ( const tim_comp_one_channel_cfg* const cfg ) : cfg( cfg ) {
+TimCompOneChannel::TimCompOneChannel ( const TimCompOneChannelCfg* const cfg ) : cfg( cfg ) {
 	this->hal_tim_cfg.Instance						= this->cfg->tim;
 
 	this->hal_tim_cfg.Channel						= this->cfg->tim_channel;
@@ -76,7 +76,7 @@ tim_comp_one_channel::tim_comp_one_channel ( const tim_comp_one_channel_cfg* con
 	this->hal_tim_ch_cfg.Pulse						= 0;
 }
 
-bool tim_comp_one_channel::reinit ( uint32_t cfg_number ) const {
+bool TimCompOneChannel::reinit ( uint32_t cfg_number ) const {
 	if ( cfg_number >= this->cfg->size_cfg ) return false;
 
 	this->hal_tim_cfg.Init.Period					= this->cfg->p_cfg[ cfg_number ].period;
@@ -91,12 +91,12 @@ bool tim_comp_one_channel::reinit ( uint32_t cfg_number ) const {
 	return true;
 }
 
-bool tim_comp_one_channel::on ( void ) const {
+bool TimCompOneChannel::on ( void ) const {
 	if ( HAL_TIM_OC_Start( &this->hal_tim_cfg, this->cfg->out_channel ) != HAL_OK ) return false;
 	return true;
 }
 
-bool tim_comp_one_channel::off ( void ) const {
+bool TimCompOneChannel::off ( void ) const {
 	if ( HAL_TIM_OC_Stop( &this->hal_tim_cfg, this->cfg->out_channel ) != HAL_OK ) return false;
 	return true;
 }
@@ -104,7 +104,7 @@ bool tim_comp_one_channel::off ( void ) const {
 //**********************************************************************
 // tim_pwm_one_channel
 //**********************************************************************
-tim_pwm_one_channel::tim_pwm_one_channel ( const tim_pwm_one_channel_cfg* const cfg ) : cfg( cfg ) {
+TimPwmOneChannel::TimPwmOneChannel ( const tim_pwm_one_channel_cfg* const cfg ) : cfg( cfg ) {
 	this->hal_tim_cfg.Instance						= this->cfg->tim;
 
 	this->hal_tim_cfg.Channel						= this->cfg->tim_channel;
@@ -119,7 +119,7 @@ tim_pwm_one_channel::tim_pwm_one_channel ( const tim_pwm_one_channel_cfg* const 
 	this->hal_tim_ch_cfg.OCPolarity					= this->cfg->polarity;
 }
 
-bool tim_pwm_one_channel::reinit ( uint32_t cfg_number ) const {
+bool TimPwmOneChannel::reinit ( uint32_t cfg_number ) const {
 	if ( cfg_number >= this->cfg->size_cfg ) return false;
 
 	this->hal_tim_cfg.Init.Period					= this->cfg->p_cfg[ cfg_number ].period;
@@ -133,24 +133,24 @@ bool tim_pwm_one_channel::reinit ( uint32_t cfg_number ) const {
 	return true;
 }
 
-bool tim_pwm_one_channel::on ( void ) const {
+bool TimPwmOneChannel::on ( void ) const {
 	if ( HAL_TIM_PWM_Start( &this->hal_tim_cfg, this->cfg->out_channel ) != HAL_OK ) return false;
 	return true;
 }
 
-bool tim_pwm_one_channel::off ( void ) const {
+bool TimPwmOneChannel::off ( void ) const {
 	if ( HAL_TIM_PWM_Stop( &this->hal_tim_cfg, this->cfg->out_channel ) != HAL_OK ) return false;
 	return true;
 }
 
-void tim_pwm_one_channel::duty_set ( float duty ) const {
+void TimPwmOneChannel::duty_set ( float duty ) const {
 	__HAL_TIM_SET_COMPARE( &this->hal_tim_cfg, this->cfg->out_channel, this->cfg->tim->ARR * duty );
 }
 
 //**********************************************************************
 // tim_interrupt
 //**********************************************************************
-tim_interrupt::tim_interrupt( const tim_interrupt_cfg* const cfg ) : cfg( cfg ) {
+TimInterrupt::TimInterrupt( const TimInterruptCfg* const cfg ) : cfg( cfg ) {
 	this->hal_tim_cfg.Instance						= this->cfg->tim;
 
 	this->hal_tim_cfg.Channel						= this->cfg->tim_channel;
@@ -162,7 +162,7 @@ tim_interrupt::tim_interrupt( const tim_interrupt_cfg* const cfg ) : cfg( cfg ) 
 	this->hal_tim_cfg.Init.Prescaler				= 0;
 }
 
-bool tim_interrupt::reinit ( uint32_t cfg_number ) const {
+bool TimInterrupt::reinit ( uint32_t cfg_number ) const {
 	if ( cfg_number >= this->cfg->size_cfg ) return false;
 
 	this->hal_tim_cfg.Init.Period					= this->cfg->p_cfg[ cfg_number ].period;
@@ -173,16 +173,16 @@ bool tim_interrupt::reinit ( uint32_t cfg_number ) const {
 	return true;
 }
 
-bool tim_interrupt::on ( void ) const {
+bool TimInterrupt::on ( void ) const {
 	if ( HAL_TIM_Base_Start_IT( &this->hal_tim_cfg ) != HAL_OK ) return false;
 	return true;
 }
 
-bool tim_interrupt::off ( void ) const {
+bool TimInterrupt::off ( void ) const {
 	if ( HAL_TIM_Base_Stop_IT( &this->hal_tim_cfg ) != HAL_OK ) return false;
 	return true;
 }
 
-void tim_interrupt::clear_interrupt_flag ( void ) const {
+void TimInterrupt::clearInterruptFlag ( void ) const {
 	HAL_TIM_IRQHandler( &this->hal_tim_cfg );
 }

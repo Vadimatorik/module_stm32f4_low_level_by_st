@@ -1,6 +1,6 @@
 #include "rcc.h"
 
-RCC_RESULT rcc::set_cfg ( uint32_t number_cfg_set ) const {
+RCC_RESULT Rcc::setCfg ( uint32_t number_cfg_set ) const {
     if ( number_cfg_set >= this->number_cfg ) return RCC_RESULT::ERROR_CFG_NUMBER;
 
     RCC_OscInitTypeDef          osc_cfg;

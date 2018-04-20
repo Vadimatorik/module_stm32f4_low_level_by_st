@@ -15,9 +15,9 @@ struct pin_cfg {
     const GPIO_InitTypeDef      init;
 };
 
-class pin : public pin_base {
+class Pin : public PinBase {
 public:
-    pin( const pin_cfg* const cfg ) : cfg( cfg ) {}
+    Pin( const pin_cfg* const cfg ) : cfg( cfg ) {}
 
     void	init    ( void )            const;                        // Перед инициализацией включается тактирование портов.
 
@@ -36,9 +36,9 @@ private:
 
 };
 
-class pin_multifunc : public pin, public pin_multifunc_base {
+class pin_multifunc : public Pin, public PinMultifuncBase {
 public:
-    pin_multifunc( const pin_cfg* const cfg, uint32_t count_cfg ) : pin( cfg ), count_cfg( count_cfg ) {}
+    pin_multifunc( const pin_cfg* const cfg, uint32_t count_cfg ) : Pin( cfg ), count_cfg( count_cfg ) {}
     bool    reinit  ( uint32_t number_cfg )  const;
 
 private:

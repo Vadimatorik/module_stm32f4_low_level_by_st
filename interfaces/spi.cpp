@@ -1,14 +1,14 @@
 #include "spi.h"
 #include <string.h>
 
-spi_master_8bit::spi_master_8bit ( const spi_master_8bit_cfg* const cfg ) : cfg( cfg ) {
+spi_master_8bit::spi_master_8bit ( const spiMaster8bitCfg* const cfg ) : cfg( cfg ) {
     this->handle.Instance                               = cfg->SPIx;
     this->handle.Init.Mode                              = SPI_MODE_MASTER;
     this->handle.Init.Direction                         = SPI_DIRECTION_2LINES;
     this->handle.Init.DataSize                          = SPI_DATASIZE_8BIT;
-    this->handle.Init.CLKPolarity                       = cfg->clk_polarity;
-    this->handle.Init.CLKPhase                          = cfg->clk_phase;
-    this->handle.Init.BaudRatePrescaler                 = cfg->baud_rate_prescaler;
+    this->handle.Init.CLKPolarity                       = cfg->clkPolarity;
+    this->handle.Init.CLKPhase                          = cfg->clkPhase;
+    this->handle.Init.BaudRatePrescaler                 = cfg->baudratePrescaler;
 
     this->handle.Init.NSS                               = SPI_NSS_SOFT;
     this->handle.Init.FirstBit                          = SPI_FIRSTBIT_MSB;
@@ -18,10 +18,10 @@ spi_master_8bit::spi_master_8bit ( const spi_master_8bit_cfg* const cfg ) : cfg(
 
     this->handle.obj                                    = this;
 
-    if ( cfg->dma_tx != nullptr ) {
+    if ( cfg->dmaTx != nullptr ) {
         this->handle.hdmatx = &this->hdma_tx;
-        this->handle.hdmatx->Instance					= this->cfg->dma_tx;
-        this->handle.hdmatx->Init.Channel				= this->cfg->dma_tx_ch;
+        this->handle.hdmatx->Instance					= this->cfg->dmaTx;
+        this->handle.hdmatx->Init.Channel				= this->cfg->dmaTxCh;
         this->handle.hdmatx->Init.Direction				= DMA_MEMORY_TO_PERIPH;
         this->handle.hdmatx->Init.PeriphInc				= DMA_PINC_DISABLE;
         this->handle.hdmatx->Init.MemInc				= DMA_MINC_ENABLE;
@@ -35,10 +35,10 @@ spi_master_8bit::spi_master_8bit ( const spi_master_8bit_cfg* const cfg ) : cfg(
         this->handle.hdmatx->Parent                     = &this->handle;
     }
 
-    if ( cfg->dma_rx != nullptr ) {
+    if ( cfg->dmaRx != nullptr ) {
         this->handle.hdmarx = &this->hdma_rx;
-        this->handle.hdmarx->Instance					= this->cfg->dma_rx;
-        this->handle.hdmarx->Init.Channel				= this->cfg->dma_rx_ch;
+        this->handle.hdmarx->Instance					= this->cfg->dmaRx;
+        this->handle.hdmarx->Init.Channel				= this->cfg->dmaRxCh;
         this->handle.hdmarx->Init.Direction				= DMA_PERIPH_TO_MEMORY;
         this->handle.hdmarx->Init.PeriphInc				= DMA_PINC_DISABLE;
         this->handle.hdmarx->Init.MemInc				= DMA_MINC_ENABLE;
@@ -80,7 +80,7 @@ BASE_RESULT spi_master_8bit::tx ( const uint8_t* const  p_array_tx, const uint16
     BASE_RESULT rv = BASE_RESULT::TIME_OUT ;
     xSemaphoreTake ( this->s, 0 );
 
-    if ( this->cfg->pin_cs != nullptr )		this->cfg->pin_cs->set( 0 );
+    if ( this->cfg->pinCs != nullptr )		this->cfg->pinCs->set( 0 );
 
     if ( this->handle.hdmatx != nullptr ) {
         HAL_SPI_Transmit_DMA( &this->handle, (uint8_t*)p_array_tx,length);
@@ -90,7 +90,7 @@ BASE_RESULT spi_master_8bit::tx ( const uint8_t* const  p_array_tx, const uint16
     	rv = BASE_RESULT::OK;
     }
 
-    if ( this->cfg->pin_cs != nullptr)		this->cfg->pin_cs->set( 1 );
+    if ( this->cfg->pinCs != nullptr)		this->cfg->pinCs->set( 1 );
     if ( this->m != nullptr)				USER_OS_GIVE_MUTEX( this->m );
     return rv;
 }
@@ -137,7 +137,7 @@ BASE_RESULT spi_master_8bit::tx ( const uint8_t* const  p_array_tx, uint8_t* p_a
     BASE_RESULT rv = BASE_RESULT::TIME_OUT;
     xSemaphoreTake ( this->s, 0 );
 
-    if ( this->cfg->pin_cs != nullptr )	this->cfg->pin_cs->set( 0 );
+    if ( this->cfg->pinCs != nullptr )	this->cfg->pinCs->set( 0 );
 
     if ( ( this->handle.hdmatx != nullptr ) && ( this->handle.hdmarx != nullptr ) ) {
         HAL_SPI_TransmitReceive_DMA( &this->handle, (uint8_t*)p_array_tx, p_array_rx, length );
@@ -147,7 +147,7 @@ BASE_RESULT spi_master_8bit::tx ( const uint8_t* const  p_array_tx, uint8_t* p_a
             rv = BASE_RESULT::OK;
     }
 
-    if ( this->cfg->pin_cs != nullptr)	this->cfg->pin_cs->set( 1 );
+    if ( this->cfg->pinCs != nullptr)	this->cfg->pinCs->set( 1 );
     if ( this->m != nullptr)			USER_OS_GIVE_MUTEX( this->m );
     return rv;
 }
@@ -158,7 +158,7 @@ BASE_RESULT spi_master_8bit::tx_one_item ( const uint8_t p_item_tx, const uint16
     BASE_RESULT rv = BASE_RESULT::TIME_OUT ;
     xSemaphoreTake ( this->s, 0 );
 
-    if ( this->cfg->pin_cs != nullptr )	this->cfg->pin_cs->set( 0 );
+    if ( this->cfg->pinCs != nullptr )	this->cfg->pinCs->set( 0 );
 
     uint8_t p_array_tx[count];
     memset(p_array_tx, p_item_tx, count);
@@ -171,7 +171,7 @@ BASE_RESULT spi_master_8bit::tx_one_item ( const uint8_t p_item_tx, const uint16
             rv = BASE_RESULT::OK;
     }
 
-    if ( this->cfg->pin_cs != nullptr)	this->cfg->pin_cs->set( 1 );
+    if ( this->cfg->pinCs != nullptr)	this->cfg->pinCs->set( 1 );
     if ( this->m != nullptr)			USER_OS_GIVE_MUTEX( this->m );
     return rv;
 }
@@ -182,8 +182,8 @@ BASE_RESULT spi_master_8bit::rx ( uint8_t* p_array_rx, const uint16_t& length, c
     BASE_RESULT rv = BASE_RESULT::TIME_OUT ;
     xSemaphoreTake ( this->s, 0 );
 
-    if ( this->cfg->pin_cs != nullptr )     // Опускаем CS (для того, чтобы "выбрать" устроство).
-        this->cfg->pin_cs->set( 0 );
+    if ( this->cfg->pinCs != nullptr )     // Опускаем CS (для того, чтобы "выбрать" устроство).
+        this->cfg->pinCs->set( 0 );
 
     uint8_t tx_dummy[length];
     memset( tx_dummy, out_value, length );
@@ -196,7 +196,7 @@ BASE_RESULT spi_master_8bit::rx ( uint8_t* p_array_rx, const uint16_t& length, c
             rv = BASE_RESULT::OK;
     }
 
-    if ( this->cfg->pin_cs != nullptr)	this->cfg->pin_cs->set( 1 );
+    if ( this->cfg->pinCs != nullptr)	this->cfg->pinCs->set( 1 );
     if ( this->m != nullptr)			USER_OS_GIVE_MUTEX( this->m );
     return rv;
 }
@@ -246,7 +246,7 @@ bool spi_master_8bit::init_clk_spi () const {
 
 bool spi_master_8bit::init_spi_irq ( void ) const {
     // Если и TX и RX по DMA, то SPI прерывание не включается.
-    if ((this->cfg->dma_tx != nullptr) && (this->cfg->dma_rx != nullptr)) {
+    if ((this->cfg->dmaTx != nullptr) && (this->cfg->dmaRx != nullptr)) {
         return false;
     }
     switch ((uint32_t)this->cfg->SPIx)    {
@@ -284,20 +284,20 @@ bool spi_master_8bit::init_spi ( void ) const {
 	r = HAL_SPI_Init ( &this->handle );
 	if ( r != HAL_OK ) return false;
 
-    if ( this->cfg->dma_tx != nullptr ) {
-        dma_clk_on( this->cfg->dma_tx );
+    if ( this->cfg->dmaTx != nullptr ) {
+        dma_clk_on( this->cfg->dmaTx );
 		r = HAL_DMA_Init( &this->hdma_tx );
 		if ( r != HAL_OK ) return false;
-		dma_irq_on( this->cfg->dma_tx, this->cfg->handler_prio );
+		dma_irq_on( this->cfg->dmaTx, this->cfg->handlerPrio );
     }
 
-    if ( this->cfg->dma_rx != nullptr ) {
-        dma_clk_on( this->cfg->dma_rx );
+    if ( this->cfg->dmaRx != nullptr ) {
+        dma_clk_on( this->cfg->dmaRx );
 		r = HAL_DMA_Init( &this->hdma_rx );
 		if ( r != HAL_OK ) return false;
-		dma_irq_on( this->cfg->dma_rx, this->cfg->handler_prio );
+		dma_irq_on( this->cfg->dmaRx, this->cfg->handlerPrio );
     }
 
-    if ( this->cfg->pin_cs != nullptr )		this->cfg->pin_cs->set( 1 );
+    if ( this->cfg->pinCs != nullptr )		this->cfg->pinCs->set( 1 );
     return true;
 }

@@ -39,10 +39,10 @@ struct rcc_cfg {
 	  uint32_t                    f_latency;
 };
 
-class rcc : public rcc_base {
+class Rcc : public RccBase {
 public:
-    rcc( const rcc_cfg* const array_cfg_st, const uint32_t number_cfg ) : array_cfg_st( array_cfg_st ), number_cfg( number_cfg ) {}
-    RCC_RESULT set_cfg ( uint32_t number_cfg_set ) const;
+    Rcc( const rcc_cfg* const array_cfg_st, const uint32_t number_cfg ) : array_cfg_st( array_cfg_st ), number_cfg( number_cfg ) {}
+    RCC_RESULT setCfg ( uint32_t number_cfg_set ) const;
 
 private:
     const rcc_cfg*              const array_cfg_st;
