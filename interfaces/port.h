@@ -9,7 +9,7 @@
 class GlobalPort : public GlobalPortBase {
 public:
     GlobalPort( const pin_cfg* const cfg, uint32_t number_cfg ) : cfg( cfg ), number_cfg( number_cfg ) {}
-    void reinit_all_ports ( void ) const;
+    void reinitAllPorts ( void ) const;
 
 private:
     const pin_cfg* const cfg;
