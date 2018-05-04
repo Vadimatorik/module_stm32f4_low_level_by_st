@@ -10,7 +10,7 @@
 struct SpiMaster8BitCfg {
 	SPI_TypeDef*				SPIx;
 
-	const PinBase*				pinCs;
+	PinBase*				pinCs;
 
 	uint32_t					clkPolarity;					/// SPI_Clock_Polarity.
 	uint32_t					clkPhase;						/// SPI_Clock_Phase.
