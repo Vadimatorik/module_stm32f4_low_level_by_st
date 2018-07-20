@@ -49,6 +49,7 @@
 
 /* Includes ------------------------------------------------------------------*/
 #include "stm32f4xx_ll_sdmmc.h"
+#include "stm32f4xx_hal_dma.h"
 
 /** @addtogroup STM32F4xx_HAL_Driver
   * @{
@@ -165,6 +166,7 @@ typedef struct
   
   uint32_t                     CID[4];           /*!< SD card identification number table */
   
+  void*							obj;			/// Связка с C++.
 }SD_HandleTypeDef;
 
 /** 
