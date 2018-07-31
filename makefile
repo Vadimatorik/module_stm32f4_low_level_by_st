@@ -1,5 +1,5 @@
 ifndef MODULE_STM32_F4_API_OPTIMIZATION
-	MODULE_STM32_F4_API_OPTIMIZATION = -g3 -O0
+	MODULE_STM32_F4_API_OPTIMIZATION = -g0 -Os
 endif
 
 MODULE_STM32F4_LOW_LEVEL_BY_ST_C_FILE				:= $(shell find module_stm32f4_low_level_by_st/		-maxdepth 10 -type f -name "*.c" )
