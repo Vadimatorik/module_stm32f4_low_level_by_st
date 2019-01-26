@@ -45,8 +45,8 @@ include_directories(
 )
 
 # Компиляции полежат все <<.c>> файлы из директории src.
-file (GLOB ${PROJECT_NAME}_SOURCES "${CMAKE_CURRENT_SOURCE_DIR}/cmsis/src/*.c")
-file (GLOB ${PROJECT_NAME}_SOURCES "${CMAKE_CURRENT_SOURCE_DIR}/hal/src/*.c")
+file (GLOB ${PROJECT_NAME}_SOURCES "${CMAKE_CURRENT_SOURCE_DIR}/cmsis/device/src/*.c"
+                                   "${CMAKE_CURRENT_SOURCE_DIR}/hal/src/*.c")
 
 # Собираем библиотеку из .obj файлов, полученных из файлов, добавленных выше.
 add_library (${PROJECT_NAME} ${${PROJECT_NAME}_SOURCES})
